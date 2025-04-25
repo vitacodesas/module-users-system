@@ -11,10 +11,8 @@ class ModuleUsersSystemServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/config/module-users-system.php', 'users_system');
-        
+        $this->mergeConfigFrom(__DIR__.'/config/module-users-system.php', 'users_system');   
     }
-
     /**
      * Bootstrap services.
      */
