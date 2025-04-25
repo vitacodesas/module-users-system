@@ -1,0 +1,21 @@
+{
+    "name": "vitacode/module-users-system",
+    "description": "Database package for Laravel by Vitacode",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Vitacode\\ModuleUsersSystem\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Vitacode\\ModuleUsersSystem\\DatabaseServiceProvider"
+            ]
+        }
+    },
+    "require": {}
+}
