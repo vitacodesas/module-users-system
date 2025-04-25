@@ -11,6 +11,7 @@ class ModuleUsersSystemServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->mergeConfigFrom(__DIR__.'/config/module-users-system.php', 'users_system');
         
     }
 
@@ -21,13 +22,6 @@ class ModuleUsersSystemServiceProvider extends ServiceProvider
     {
         // Carga las rutas del paquete
         $this->loadRoutesFrom(__DIR__.'/routes/api.php');
-
-        // Publica las migraciones si las hubiera
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-
-        // Opcional: publicar archivos si el usuario quiere personalizar
-        $this->publishes([
-            __DIR__.'/../config/module-users-system.php' => config_path('module-users-system.php'),
-        ], 'config');
     }
+
 }

@@ -11,14 +11,28 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+
+
+    protected string $userModel;
+
+    public function __construct()
+    {
+        $this->userModel = config('users_system.user_model', \App\Models\User::class);
+    }
+
     public function login(Request $request)
     {
+
+
+        
+
+
         $data = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
 
-        $user = User::where('email', $data['email'])->first();
+        $user = $this->userModel::where('email', $data['email'])->first();
 
         if (! $user || ! Hash::check($data['password'], $user->password)) {
             throw ValidationException::withMessages([
