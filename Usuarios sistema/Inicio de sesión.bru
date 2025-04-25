@@ -1,0 +1,22 @@
+meta {
+  name: Inicio de sesión
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "test@example.com",
+    "password": "password"
+  }
+}
+
+vars:post-response {
+  token: res.body.token
+}

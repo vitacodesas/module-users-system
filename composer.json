@@ -13,9 +13,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Vitacode\\ModuleUsersSystem\\DatabaseServiceProvider"
+                "Vitacode\\ModuleUsersSystem\\ModuleUsersSystemServiceProvider"
             ]
         }
     },
-    "require": {}
+    "require": {
+    }
 }
