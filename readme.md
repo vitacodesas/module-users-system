@@ -83,7 +83,6 @@ Próximamente: se incluirán pruebas automatizadas con PHPUnit para endpoints pr
 
 - Middleware para proteger rutas por permiso.
 - Soporte para múltiples tipos de usuario.
-- Soporte para eventos y listeners.
 
 ---
 
