@@ -22,17 +22,13 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-
-
-        
-
-
+        $visible = config('users_system.user_visible_attributes', ['id', 'name', 'email']);
         $data = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
 
-        $user = $this->userModel::where('email', $data['email'])->first();
+        $user = $this->userModel::where('email', $data['email'])->first(array_merge($visible, ['password']));
 
         if (! $user || ! Hash::check($data['password'], $user->password)) {
             throw ValidationException::withMessages([

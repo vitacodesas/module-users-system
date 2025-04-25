@@ -20,7 +20,6 @@ class ModuleUsersSystemServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Carga las rutas del paquete
         $this->loadRoutesFrom(__DIR__.'/routes/api.php');
     }
 
