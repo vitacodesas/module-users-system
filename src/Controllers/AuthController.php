@@ -4,32 +4,13 @@ namespace Vitacode\ModuleUsersSystem\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
-    {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
-
-        return response()->json([
-            'message' => 'Usuario registrado correctamente',
-            'user' => $user
-        ]);
-    }
-
     public function login(Request $request)
     {
         $data = $request->validate([
@@ -44,22 +25,27 @@ class AuthController extends Controller
                 'email' => ['Las credenciales son incorrectas.'],
             ]);
         }
-
         $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Login exitoso',
-            'token' => $token,
+        return $this->responseCustom(true, [
+            'access_token' => $token,
+            'token_type' => 'Bearer',
             'user' => $user
-        ]);
+        ], 'Login exitoso', Response::HTTP_OK);
     }
 
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
+        return $this->responseCustom(true, [], 'Logout exitoso', 200);
+    }
 
+
+    private function responseCustom(Bool $status = true, $data = [], String $message = 'Acción procesada con éxito.', Int $code = Response::HTTP_OK)
+    {
         return response()->json([
-            'message' => 'Sesión cerrada correctamente',
-        ]);
+            "status" => $status,
+            "message" => $message,
+            "data" => $data,
+        ], $code);
     }
 }

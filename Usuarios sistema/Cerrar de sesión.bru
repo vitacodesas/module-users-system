@@ -5,9 +5,13 @@ meta {
 }
 
 post {
-  url: {{base_url}}auth/login
+  url: {{base_url}}auth/logout
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 body:json {
