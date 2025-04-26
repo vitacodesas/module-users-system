@@ -17,7 +17,6 @@ class PermissionController extends Controller
         $request->validate([
             'name' => 'required|string|unique:permissions,name',
         ]);
-
         $permission = Permission::create(['name' => $request->name]);
 
         return $this->responseCustom(true, [

@@ -1,0 +1,25 @@
+meta {
+  name: Crear permisos
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}auth/permissions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "crear permisos"
+  }
+}
+
+vars:post-response {
+  token: res.body.token
+}
