@@ -14,6 +14,8 @@ return [
     'routes' => [
         'login' => true,
         'logout' => true,
+        'roles' => true,
+        'permissions' => true,
     ],
 
     /*

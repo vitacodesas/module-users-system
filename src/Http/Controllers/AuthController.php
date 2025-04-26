@@ -1,13 +1,12 @@
 <?php
 
-namespace Vitacode\ModuleUsersSystem\Controllers;
+namespace Vitacode\ModuleUsersSystem\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Vitacode\ModuleUsersSystem\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
@@ -45,15 +44,5 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
         return $this->responseCustom(true, [], 'Logout exitoso', 200);
-    }
-
-
-    private function responseCustom(Bool $status = true, $data = [], String $message = 'Acción procesada con éxito.', Int $code = Response::HTTP_OK)
-    {
-        return response()->json([
-            "status" => $status,
-            "message" => $message,
-            "data" => $data,
-        ], $code);
     }
 }

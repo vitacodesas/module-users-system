@@ -1,92 +1,161 @@
 # Vitacode Module Users System
 
-Este paquete proporciona un sistema completo de autenticación y autorización para Laravel, incluyendo:
+**Un paquete modular para Laravel que proporciona APIs listas para autenticación (login, logout) y gestión de roles y permisos.**
 
-- Registro y login de usuarios utilizando Laravel Sanctum.
-- Logout con invalidación de tokens.
-- Gestión de roles y permisos.
-- Asociación de permisos a roles.
-- Asociación de roles a usuarios.
-- Configuración personalizable desde el archivo `config/users_system.php`.
+🔹 **Compatibilidad:**  
+- Laravel 10.x  
+- Laravel Sanctum 3.x y 4.x  
+- Spatie Laravel Permission 6.x
 
 ---
 
-## 🤩 Requisitos
+## Instalación
 
-- PHP ^8.1
-- Laravel ^10
-- Laravel Sanctum ^3.0
-
----
-
-## 🚀 Instalación
+Requiere PHP >=8.1 y Laravel >=10.
 
 ```bash
 composer require vitacode/module-users-system
 ```
 
-Luego, publica la configuración (opcional):
+**Importante:** Tu proyecto debe tener instalado `laravel/sanctum` y `spatie/laravel-permission`.
+
+---
+
+## Configuración
+
+Después de instalar el paquete, publica la configuración:
 
 ```bash
-php artisan vendor:publish --tag=users-system-config
+php artisan vendor:publish --provider="Vitacode\ModuleUsersSystem\ModuleUsersSystemServiceProvider" --tag="config"
 ```
 
-Y si deseas publicar migraciones (roles/permissions):
+Esto generará un archivo de configuración en:
+
+```
+config/users_system.php
+```
+
+Configuraciones disponibles:
+
+| Clave | Descripción | Valor por defecto |
+|:------|:------------|:------------------|
+| `route_prefix` | Prefijo para las rutas de autenticación | `api/auth` |
+| `middleware` | Middleware aplicado a las rutas | `['api']` |
+| `user_model` | Modelo que usará el login | `App\Models\User` |
+| `user_fields` | Campos que se retornan al hacer login | `['id', 'name', 'email']` |
+| `routes.login` | Habilitar/Deshabilitar ruta de login | `true` |
+| `routes.logout` | Habilitar/Deshabilitar ruta de logout | `true` |
+
+---
+
+## Rutas disponibles
+
+**Prefijo:** `/api/auth`
+
+| Método | Ruta | Descripción |
+|:-------|:-----|:------------|
+| `POST` | `/login` | Iniciar sesión |
+| `POST` | `/logout` | Cerrar sesión (requiere token Sanctum) |
+
+**Prefijo:** `/api/roles`
+
+| Método | Ruta | Descripción |
+|:-------|:-----|:------------|
+| `POST` | `/` | Crear un nuevo rol |
+| `GET` | `/` | Listar todos los roles |
+
+**Prefijo:** `/api/permissions`
+
+| Método | Ruta | Descripción |
+|:-------|:-----|:------------|
+| `POST` | `/` | Crear un nuevo permiso |
+| `GET` | `/` | Listar todos los permisos |
+
+**Prefijo:** `/api/assignments`
+
+| Método | Ruta | Descripción |
+|:-------|:-----|:------------|
+| `POST` | `/role-to-permission` | Asignar un permiso a un rol |
+| `POST` | `/role-to-user` | Asignar un rol a un usuario |
+
+---
+
+## Ejemplo de login
 
 ```bash
-php artisan vendor:publish --tag=users-system-migrations
+POST /api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password"
+}
+```
+
+**Respuesta exitosa:**
+
+```json
+{
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...",
+  "user": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "user@example.com"
+  }
+}
 ```
 
 ---
 
-## ⚙️ Configuración
+## Cómo funciona internamente
 
-El archivo de configuración `config/users_system.php` te permite personalizar:
-
-- El modelo de usuario.
-- Los atributos visibles tras el login.
-- Activar/desactivar rutas de autenticación.
-
-```php
-return [
-    'user_model' => \App\Models\User::class,
-    'user_visible_attributes' => ['id', 'name', 'email'],
-    'auth_routes' => true,
-];
-```
+- Usa el modelo configurado (`user_model`) para autenticación.
+- Retorna solo los campos necesarios (`user_fields`) para optimizar la consulta.
+- Genera el token de sesión usando Laravel Sanctum.
+- Administra roles y permisos usando Spatie Laravel Permission.
 
 ---
 
-## 🧑‍💻 Endpoints
+## Roadmap
 
-| Método | Ruta                          | Descripción                        |
-|--------|-------------------------------|------------------------------------|
-| POST   | /api/register                 | Registrar nuevo usuario            |
-| POST   | /api/login                    | Iniciar sesión                     |
-| POST   | /api/logout                   | Cerrar sesión actual               |
-| POST   | /api/roles                    | Crear rol                          |
-| POST   | /api/permissions              | Crear permiso                      |
-| POST   | /api/roles/{id}/permissions   | Asignar permisos a un rol          |
-| POST   | /api/users/{id}/roles        | Asignar roles a un usuario         |
-
-> 📌 Todos los endpoints están protegidos por Sanctum y deben ser usados con autenticación de tipo Bearer Token, excepto `register` y `login`.
+- [x] Autenticación básica (Login/Logout)
+- [x] Gestión de roles y permisos
+- [ ] Personalización avanzada de eventos de login/logout
+- [ ] Soporte multi-guard
+- [ ] Publicación de controladores para sobreescritura
 
 ---
 
-## 🥪 Tests
+## Contribuciones
 
-Próximamente: se incluirán pruebas automatizadas con PHPUnit para endpoints principales.
-
----
-
-## 💠 Roadmap
-
-- Middleware para proteger rutas por permiso.
-- Soporte para múltiples tipos de usuario.
+¡Las contribuciones son bienvenidas!  
+Haz un fork, crea una rama con tus cambios y envía un pull request.
 
 ---
 
-## 📄 Licencia
+## Licencia
 
 MIT © Vitacode
+
+---
+
+# 🚀 Instalación rápida para desarrollo local
+
+1. Clona el paquete localmente.
+2. En tu `composer.json` del proyecto principal agrega el repositorio:
+
+```json
+"repositories": [
+    {
+      "type": "path",
+      "url": "../ruta-al-paquete/vitacode-module-users-system"
+    }
+]
+```
+
+3. Requiere el paquete normalmente:
+
+```bash
+composer require vitacode/module-users-system:dev-main
+```
 

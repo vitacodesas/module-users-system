@@ -1,2 +1,4 @@
 /testbench
 db/*
+/vendor
+/composer.lock
