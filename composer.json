@@ -1,6 +1,8 @@
 {
     "name": "vitacode/module-users-system",
     "description": "Database package for Laravel by Vitacode",
+    "keywords": ["laravel", "sanctum", "permissions", "roles", "authentication"],
+    "homepage": "https://github.com/vitacodesas/module-users-system",
     "type": "library",
     "license": "MIT",
     "minimum-stability": "dev",
