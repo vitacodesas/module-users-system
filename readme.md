@@ -159,3 +159,7 @@ MIT © Vitacode
 composer require vitacode/module-users-system:dev-main
 ```
 
+
+
+
+TODO:: mejorar los require del paquete
